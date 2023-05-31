@@ -1,0 +1,12 @@
+{
+  "package": "com.optimus.mixin",
+  "refmap": "mixins.examplemod.refmap.json",
+  "minVersion": "0.7",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+
+  ],
+  "client": [
+    "NetworkMixin"
+  ]
+}

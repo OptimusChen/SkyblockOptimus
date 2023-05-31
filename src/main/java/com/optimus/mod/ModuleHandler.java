@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ModuleHandler {
 
-    public final List<Module> mods = new ArrayList<>();
+    private final List<Module> mods = new ArrayList<>();
 
     public ModuleHandler() {
         mods.add(new FlipperMod());
@@ -15,6 +15,7 @@ public class ModuleHandler {
         mods.add(new AutoJujuMod());
         mods.add(new AutoFishMod());
         mods.add(new ScathaMod());
+        mods.add(new Automation());
     }
 
     public int getModId(Module mod) {
@@ -34,4 +35,6 @@ public class ModuleHandler {
 
         return null;
     }
+
+    public List<Module> getMods() { return mods; }
 }

@@ -1,13 +1,13 @@
 package com.optimus;
 
 import com.optimus.gui.OptimusGuiScreen;
-import com.optimus.mod.mods.CrystalHollowMod;
-import com.optimus.util.PlayerHeadRotator;
 import com.optimus.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+
+import java.awt.*;
 
 public class OptimusCommand extends CommandBase {
     @Override
@@ -27,6 +27,6 @@ public class OptimusCommand extends CommandBase {
 
     @Override
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {
-        Util.delayTask(100, () -> Minecraft.getMinecraft().displayGuiScreen(new OptimusGuiScreen()));
+        if (args.length == 0) Util.delayTask(10, () -> Minecraft.getMinecraft().displayGuiScreen(new OptimusGuiScreen()));
     }
 }

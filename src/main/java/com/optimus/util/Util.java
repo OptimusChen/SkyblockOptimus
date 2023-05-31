@@ -204,7 +204,7 @@ public class Util {
         Util.delayTask(500, () -> KeyBinding.setKeyBindState(code, !rc.isKeyDown()));
     }
 
-    public static void drawCenteredString(String text, int color, float scale) {
+    public static void drawCenteredString(String text, int color, float y, float scale) {
         FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
 
         ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());
@@ -214,7 +214,7 @@ public class Util {
 
         float width = fontRenderer.getStringWidth(text) * scale;
 
-        fontRenderer.drawStringWithShadow(text, ((res.getScaledWidth() - width) / 2f) / scale, (res.getScaledHeight() / 3f) / scale, color);
+        fontRenderer.drawStringWithShadow(text, ((res.getScaledWidth() - width) / 2f) / scale, (res.getScaledHeight() / y) / scale, color);
 
         GL11.glPopMatrix();
     }

@@ -17,7 +17,7 @@ public class NetworkMixin {
 
     @Inject(method = "channelRead0*", at = @At("HEAD"))
     public void onReceivePacket(ChannelHandlerContext context, Packet<?> packet, CallbackInfo ci) {
-        for (Module mod : SkyblockOptimus.getInstance().getMods().mods) {
+        for (Module mod : SkyblockOptimus.getInstance().getModHandler().getMods()) {
             mod.onReceivePacket(packet);
         }
 
@@ -25,7 +25,7 @@ public class NetworkMixin {
 
         S2APacketParticles packetIn = (S2APacketParticles) packet;
 
-        CrystalHollowMod mod = (CrystalHollowMod) SkyblockOptimus.getInstance().getMods().getMod("Crystal Hollows");
+        CrystalHollowMod mod = (CrystalHollowMod) SkyblockOptimus.getInstance().getModHandler().getMod("Crystal Hollows");
         mod.handleParticles(packetIn);
     }
 }

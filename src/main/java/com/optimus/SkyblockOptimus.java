@@ -1,5 +1,6 @@
 package com.optimus;
 
+import com.optimus.display.Graphics;
 import com.optimus.listener.GUIListener;
 import com.optimus.listener.ModuleListener;
 import com.optimus.mod.ModuleHandler;
@@ -12,7 +13,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-import java.awt.*;
+import java.awt.Color;
 
 @Mod(modid = SkyblockOptimus.MODID, version = SkyblockOptimus.VERSION)
 public class SkyblockOptimus {
@@ -20,33 +21,28 @@ public class SkyblockOptimus {
     public static final String VERSION = "1.0";
     private static SkyblockOptimus instance;
 
-    public static SkyblockOptimus getInstance() {
-        return instance;
-    }
-
     private final Minecraft mc = Minecraft.getMinecraft();
+    private Graphics graphics;
     private ModuleHandler mods;
-    public String text = null;
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         instance = this;
 
         mods = new ModuleHandler();
+        graphics =  new Graphics();
 
         ClientCommandHandler.instance.registerCommand(new OptimusCommand());
 
-        MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(graphics);
         MinecraftForge.EVENT_BUS.register(new GUIListener());
         MinecraftForge.EVENT_BUS.register(new ModuleListener());
     }
 
-    @SubscribeEvent
-    public void onRenderTick(RenderGameOverlayEvent.Text event) {
-        if (text == null) return;
+    public ModuleHandler getModHandler() { return mods; }
+    public Graphics getGraphics() { return graphics; }
 
-        Util.drawCenteredString(text, Color.RED.getRGB(), 5f);
+    public static SkyblockOptimus getInstance() {
+        return instance;
     }
-
-    public ModuleHandler getMods() { return mods; }
 }

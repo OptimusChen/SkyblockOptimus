@@ -15,8 +15,6 @@ public class OptimusGuiScreen extends GuiScreen {
 
     private static final Minecraft mc = Minecraft.getMinecraft();
 
-
-
     @Override
     public void initGui() {
         super.initGui();

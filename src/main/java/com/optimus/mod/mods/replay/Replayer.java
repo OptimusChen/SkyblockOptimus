@@ -11,10 +11,12 @@ public class Replayer {
     private boolean loop = false;
     private boolean playing = false;
     private final Recorder recorder;
+    private final ReplayMod replay;
     private final Minecraft mc = Minecraft.getMinecraft();
 
-    public Replayer(Recorder recorder) {
-        this.recorder = recorder;
+    public Replayer(ReplayMod replay) {
+        this.recorder = replay.getRecorder();
+        this.replay = replay;
     }
 
     public void play() {
@@ -41,7 +43,7 @@ public class Replayer {
                 currentFrame++;
 
                 try {
-                    Thread.sleep(50);
+                    Thread.sleep(1000 / replay.getFPS());
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }

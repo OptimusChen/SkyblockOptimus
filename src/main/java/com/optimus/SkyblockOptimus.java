@@ -4,6 +4,7 @@ import com.optimus.display.Graphics;
 import com.optimus.listener.GUIListener;
 import com.optimus.listener.ModuleListener;
 import com.optimus.mod.ModuleHandler;
+import com.optimus.mod.mods.replay.ReplayCommand;
 import com.optimus.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.ClientCommandHandler;
@@ -33,6 +34,7 @@ public class SkyblockOptimus {
         graphics =  new Graphics();
 
         ClientCommandHandler.instance.registerCommand(new OptimusCommand());
+        ClientCommandHandler.instance.registerCommand(new ReplayCommand());
 
         MinecraftForge.EVENT_BUS.register(graphics);
         MinecraftForge.EVENT_BUS.register(new GUIListener());

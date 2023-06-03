@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -23,6 +24,7 @@ import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -217,5 +219,17 @@ public class Util {
         fontRenderer.drawStringWithShadow(text, ((res.getScaledWidth() - width) / 2f) / scale, (res.getScaledHeight() / y) / scale, color);
 
         GL11.glPopMatrix();
+    }
+
+    public static void sendMessage(String message, EnumChatFormatting color) {
+        ChatComponentText text = new ChatComponentText(message);
+
+        text.getChatStyle().setColor(color);
+
+        Minecraft.getMinecraft().thePlayer.addChatMessage(text);
+    }
+
+    public static void sendMessage(String message) {
+        Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(message));
     }
 }

@@ -4,17 +4,16 @@ import com.optimus.mod.Toggleable;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
-import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 
-public class Automation extends Toggleable {
+public class AutoF11Mod extends Toggleable {
 
     private final ArrayList<KeyBinding> keys = new ArrayList<>();
     @Override
     public String getName() {
-        return "Key Automation";
+        return "Auto-F11";
     }
 
     @Override

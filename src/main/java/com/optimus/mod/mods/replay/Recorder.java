@@ -36,12 +36,13 @@ public class Recorder {
     }
 
     private Thread thread;
+    private final ReplayMod replay;
     private boolean recording = false;
     private final List<Frame> frames = new ArrayList<>();
     private final Minecraft mc = Minecraft.getMinecraft();
 
-    public Recorder() {
-
+    public Recorder(ReplayMod replay) {
+        this.replay = replay;
     }
 
     public void record() {
@@ -68,7 +69,7 @@ public class Recorder {
                 frames.add(frame);
 
                 try {
-                    Thread.sleep(50);
+                    Thread.sleep(1000 / replay.getFPS());
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }

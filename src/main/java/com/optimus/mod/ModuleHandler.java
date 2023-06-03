@@ -1,6 +1,7 @@
 package com.optimus.mod;
 
 import com.optimus.mod.mods.*;
+import com.optimus.mod.mods.replay.ReplayMod;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,8 @@ public class ModuleHandler {
         mods.add(new AutoJujuMod());
         mods.add(new AutoFishMod());
         mods.add(new ScathaMod());
-        mods.add(new Automation());
+        mods.add(new AutoF11Mod());
+        mods.add(new ReplayMod());
     }
 
     public int getModId(Module mod) {

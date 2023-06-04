@@ -2,7 +2,7 @@ package com.optimus.mixin;
 
 import com.optimus.SkyblockOptimus;
 import com.optimus.mod.Module;
-import com.optimus.mod.mods.CrystalHollowMod;
+import com.optimus.mod.mods.PowderMod;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -25,7 +25,7 @@ public class NetworkMixin {
 
         S2APacketParticles packetIn = (S2APacketParticles) packet;
 
-        CrystalHollowMod mod = (CrystalHollowMod) SkyblockOptimus.getInstance().getModHandler().getMod("Crystal Hollows");
+        PowderMod mod = (PowderMod) SkyblockOptimus.getInstance().getModHandler().getMod("Powder Grinding");
         mod.handleParticles(packetIn);
     }
 }

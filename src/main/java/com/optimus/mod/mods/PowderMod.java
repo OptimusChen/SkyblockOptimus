@@ -8,32 +8,33 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.INetHandlerPlayServer;
+import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.network.play.server.S2APacketParticles;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.Vec3;
 
+import java.awt.*;
 import java.io.IOException;
 
-public class CrystalHollowMod extends Module {
+public class PowderMod extends Module {
 
-    private CrystalHollowGui gui;
+    private PowderGui gui;
     public boolean autoChest = false;
     private BlockPos chest = null;
-    public PlayerHeadRotator headRotator = null;
+    public PlayerHeadRotator headRotator;
 
     @Override
     public void init() {
-        gui = new CrystalHollowGui(this);
+        gui = new PowderGui(this);
     }
 
     @Override
     public String getName() {
-        return "Crystal Hollows";
+        return "Powder Grinding";
     }
 
     @Override
@@ -43,10 +44,11 @@ public class CrystalHollowMod extends Module {
 
     @Override
     public void tick() {
-        if (headRotator != null) headRotator.onUpdate();
+        if (headRotator == null) headRotator = new PlayerHeadRotator(mc.thePlayer);
 
         if (!autoChest) {
             chest = null;
+            headRotator.stop();
             return;
         }
 
@@ -71,7 +73,9 @@ public class CrystalHollowMod extends Module {
     }
 
     public void handleParticles(S2APacketParticles packetIn) {
+        if (!autoChest) return;
         if (chest == null) return;
+        if (headRotator.isRotating()) return;
 
         if (!packetIn.getParticleType().equals(EnumParticleTypes.CRIT)) return;
 
@@ -104,24 +108,51 @@ public class CrystalHollowMod extends Module {
                 pitch = 90.0;
             }
 
-            headRotator = new PlayerHeadRotator(mc.thePlayer);
-            headRotator.setTargetYawAndPitch((float) (-1.0f * yaw), (float) (-1.0f * pitch), 100);
+            String speed = gui.textField.getText();
+
+            headRotator.setPlayer(mc.thePlayer);
+            headRotator.setTargetYawAndPitch((float) (-1.0f * yaw), (float) (-1.0f * pitch));
+            headRotator.setSpeed(Integer.parseInt(speed));
+            headRotator.startRotation();
         }
     }
 
-    static class CrystalHollowGui extends ModuleGui {
+    @Override
+    public void onReceivePacket(Packet<?> packet) {
+        if (!(packet instanceof S02PacketChat)) return;
 
-        private final CrystalHollowMod scanner;
+        S02PacketChat chat = (S02PacketChat) packet;
 
-        public CrystalHollowGui(Module mod) {
+        String message = chat.getChatComponent().getUnformattedText();
+
+        if (message.contains("You uncovered a treasure chest!")) {
+            main.getGraphics().sendTitle("Treasure Chest!", "", Color.GREEN.getRGB());
+            mc.thePlayer.playSound("random.orb", 1, 0.5f);
+        }
+    }
+
+    static class PowderGui extends ModuleGui {
+
+        private GuiTextField textField = null;
+        private final PowderMod scanner;
+
+        public PowderGui(Module mod) {
             super(mod);
 
-            scanner = (CrystalHollowMod) mod;
+            scanner = (PowderMod) mod;
         }
 
         @Override
         public void initGui() {
             super.initGui();
+
+            if (textField == null) {
+                this.textField = new GuiTextField(1, mc.fontRendererObj, width / 2, height / 4, 200, 20);
+                this.textField.setMaxStringLength(Integer.MAX_VALUE);
+
+                this.textField.xPosition = (width - textField.getWidth()) / 2;
+                this.textField.setText("3");
+            }
 
             this.buttonList.add(new GuiButton(0, width / 2, height / 2 - 30, "Auto-Chest: " + scanner.autoChest));
         }
@@ -140,7 +171,26 @@ public class CrystalHollowMod extends Module {
         public void drawScreen(int mouseX, int mouseY, float partialTicks) {
             drawDefaultBackground();
 
+            textField.drawTextBox();
             super.drawScreen(mouseX, mouseY, partialTicks);
+        }
+
+        @Override
+        protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+            super.mouseClicked(mouseX, mouseY, mouseButton);
+            textField.mouseClicked(mouseX, mouseY, mouseButton);
+        }
+
+        @Override
+        protected void keyTyped(char typedChar, int keyCode) throws IOException {
+            super.keyTyped(typedChar, keyCode);
+            textField.textboxKeyTyped(typedChar, keyCode);
+        }
+
+        @Override
+        public void updateScreen() {
+            super.updateScreen();
+            textField.updateCursorCounter();
         }
     }
 }

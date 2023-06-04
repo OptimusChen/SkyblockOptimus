@@ -1,6 +1,7 @@
 package com.optimus;
 
 import com.optimus.gui.OptimusGuiScreen;
+import com.optimus.util.PlayerHeadRotator;
 import com.optimus.util.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
@@ -28,6 +29,12 @@ public class OptimusCommand extends CommandBase {
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {
         if (args.length == 0) {
             Util.delayTask(10, () -> Minecraft.getMinecraft().displayGuiScreen(new OptimusGuiScreen()));
+            return;
         }
+
+        PlayerHeadRotator rotator = new PlayerHeadRotator(Minecraft.getMinecraft().thePlayer);
+
+        rotator.setTargetYawAndPitch(180, -180);
+        rotator.startRotation();
     }
 }

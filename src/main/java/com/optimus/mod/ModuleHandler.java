@@ -12,7 +12,7 @@ public class ModuleHandler {
 
     public ModuleHandler() {
         mods.add(new FlipperMod());
-        mods.add(new CrystalHollowMod());
+        mods.add(new PowderMod());
         mods.add(new AutoJujuMod());
         mods.add(new AutoFishMod());
         mods.add(new ScathaMod());

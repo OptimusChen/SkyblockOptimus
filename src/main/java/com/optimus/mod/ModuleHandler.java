@@ -1,6 +1,7 @@
 package com.optimus.mod;
 
 import com.optimus.mod.mods.*;
+import com.optimus.mod.mods.reminder.ReminderMod;
 import com.optimus.mod.mods.replay.ReplayMod;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class ModuleHandler {
         mods.add(new ScathaMod());
         mods.add(new AutoF11Mod());
         mods.add(new ReplayMod());
+        mods.add(new ReminderMod());
     }
 
     public int getModId(Module mod) {

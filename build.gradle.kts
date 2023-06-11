@@ -49,6 +49,8 @@ repositories {
     // If you don't want to log in with your real minecraft account, remove this line
     maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1")
     maven("https://mvnrepository.com/artifact/org.json/json")
+
+    maven("https://repo.essential.gg/repository/maven-public")
 }
 
 val shadowImpl: Configuration by configurations.creating {
@@ -60,10 +62,20 @@ dependencies {
     mappings("de.oceanlabs.mcp:mcp_stable:22-1.8.9")
     forge("net.minecraftforge:forge:1.8.9-11.15.1.2318-1.8.9")
 
+    modImplementation("gg.essential:elementa-1.8.9-forge:590")
+    modImplementation("gg.essential:vigilance-1.8.9-forge:284")
+
     // If you don't want mixins, remove these lines
     shadowImpl("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
         isTransitive = false
     }
+
+    compileOnly("org.projectlombok:lombok:1.18.28")
+    annotationProcessor("org.projectlombok:lombok:1.18.28")
+
+    testCompileOnly("org.projectlombok:lombok:1.18.28")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.28")
+
     annotationProcessor("org.spongepowered:mixin:0.8.4-SNAPSHOT")
 
     // If you don't want to log in with your real minecraft account, remove this line
@@ -115,7 +127,14 @@ tasks.shadowJar {
 
     // If you want to include other dependencies and shadow them, you can relocate them in here
     fun relocate(name: String) = relocate(name, "com.optimus.deps.$name")
+
+    archiveClassifier.set("null")
+    relocate("gg.essential.vigilance", "com.optimus.vigilance")
+    relocate("gg.essential.elementa", "com.optimus.elementa")
+    // elementa dependencies
+    relocate("gg.essential.universalcraft", "com.optimus.universalcraft")
 }
 
+tasks.named("remapJar").configure { dependsOn(tasks.named("shadowJar")) }
 tasks.assemble.get().dependsOn(tasks.remapJar)
 
